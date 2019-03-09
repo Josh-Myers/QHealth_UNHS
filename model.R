@@ -19,13 +19,13 @@ intercept = rep(-1.564, 20)
 
 df = cbind.data.frame(sex_f, atsi_y, ref_bilat, cranio_y, famHx_y, syndrome_y, y, intercept)
 
-f <- glm(y ~ 0 + offset(intercept) + offset(0.141 * sex_f) - offset(0.245 * atsi_y) + offset(1.180 * ref_bilat) + offset(1.512 * cranio_y) 
+f <- glm(y ~ 0 + offset(intercept) + offset(0.141 * sex_f) + offset(-0.245 * atsi_y) + offset(1.180 * ref_bilat) + offset(1.512 * cranio_y) 
          + offset(1.297 * famHx_y) + offset(0.993 * syndrome_y), data = df, family = binomial(link='logit'))
 f 
 
 intercept = -1.564
 sex_f = 0
-atsi_y = 0
+atsi_y = 1
 ref_bilat = 0
 cranio_y = 0
 famHx_y = 0
@@ -41,3 +41,16 @@ saveRDS(f, file = "model.rds")
 
 model = readRDS("model.rds")
 summary(model)
+
+# check model by manually making some predictions (see if they are the same as my model)
+intercept = -1.564
+sex_f = 0
+atsi_y = 1
+ref_bilat = 0
+cranio_y = 0
+famHx_y = 0
+syndrome_y = 0
+manual_model = -1.564 + (0.141 * sex_f) - (0.245 * atsi_y) + (1.180 * ref_bilat) + (1.512 * cranio_y) +  (1.297 * famHx_y) + (0.993 * syndrome_y)
+odds = exp(manual_model)
+prob = odds/(1 + odds)
+prob 
