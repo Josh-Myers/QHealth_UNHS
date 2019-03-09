@@ -25,7 +25,7 @@ f
 
 intercept = -1.564
 sex_f = 0
-atsi_y = 1
+atsi_y = 0
 ref_bilat = 0
 cranio_y = 0
 famHx_y = 0
