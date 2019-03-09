@@ -26,11 +26,13 @@ ui <- fluidPage(
                        "Family history:"),
                   checkboxInput("syndrome_y",
                        "Syndrome:"), 
-                  actionButton('do', "Go")
+                  actionButton('do', "Go"),
+                  br()
                            ), # close sidebarPanel
               mainPanel(
                 br(),
-                  textOutput("prediction")
+                textOutput("prediction"),
+                br()
               ) # close mainPanel
           ) # close sidebarLayout
      ), # close tabpanel
