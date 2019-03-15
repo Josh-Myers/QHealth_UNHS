@@ -2,7 +2,7 @@ library(shiny)
 
 # load model and set intercept value
 model = readRDS("model.rds")
-intercept = -1.564
+intercept = -2.022
 
 # define UI
 ui <- fluidPage(
@@ -24,6 +24,8 @@ ui <- fluidPage(
                        "Craniofacial abnormalities"),
                   checkboxInput("famHx_y",
                        "Family history"),
+                  checkboxInput("vent_y",
+                                "Prolonged ventilation"),
                   checkboxInput("syndrome_y",
                        "Syndrome"), 
                   actionButton('do', "Go"),
@@ -45,13 +47,13 @@ ui <- fluidPage(
                     check the "Female gender", "Indigenous", and "Family history" boxes then press the "Go" button'),
                   p('The risk that this child will go on to be diagnosed with permanent hearing loss is then calculated, given the selected risk factors. 
                     Risk is a proportion between 0 and 1,
-                    0 meaning that the outcome is very unlikley and 1 meaning that it is almost certain. Average risk for a male child is 0.17, meaning that
-                    for every 100 males who refer from the screen, 17 will be diagnosed with a permanent hearing loss (or 1.7 for every 10). You can 
-                    calculate this by deselecting all factors and pressing "Go". Average risk for females is slightly higher (0.19), meaning that for females, for 
-                    every 10 referrals, approximately 2 (1.9) will go on to be diagnosed with permanent hearing loss. 
+                    0 meaning that the outcome is very unlikley and 1 meaning that it is almost certain. Average risk for a male child is 0.12, meaning that
+                    for every 100 males who refer from the screen, 12 will be diagnosed with a permanent hearing loss (or 1.2 for every 10). You can 
+                    calculate this by deselecting all factors and pressing "Go". Average risk for females is slightly higher (0.15), meaning that for females, for 
+                    every 10 referrals, between 1 and 2 (1.5) will go on to be diagnosed with permanent hearing loss. 
                       If we use the calculator 
-                    with our first example: a female indigenous baby with family history of hearing loss, we can see the risk is 0.41, quite a lot higher than the 
-                    average risk for females (0.19). This baby
+                    with our first example: a female indigenous baby with family history of hearing loss, we can see the risk is 0.37, quite a lot higher than the 
+                    average risk for females (0.15). This baby
                     has approximately 40% risk of being diagnosed with permanent hearing loss.'),
                   p('The risk calculator cannot make predictions for infants with: bacterial meningitis, hyperbilirubinaemia, perinatal infection, severe asphyxia, 
                     and professional concern risk factors due to small numbers of babies with these risk factors'),
@@ -70,8 +72,9 @@ server <- function(input, output) {
     ref_bilat = ifelse(input$ref_bilat, 1, 0)
     cranio_y = ifelse(input$cranio_y, 1, 0)
     famHx_y = ifelse(input$famHx_y, 1, 0)
+    vent_y = ifelse(input$vent_y, 1, 0)
     syndrome_y = ifelse(input$syndrome_y, 1, 0)
-    data.frame(intercept, sex_f, atsi_y, ref_bilat, cranio_y, famHx_y, syndrome_y)
+    data.frame(intercept, sex_f, atsi_y, ref_bilat, cranio_y, famHx_y, vent_y, syndrome_y)
   })
 
    output$prediction <- renderText({

@@ -14,24 +14,25 @@ ref_bilat = rbinom(20, 1, 0.5)
 cranio_y = rbinom(20, 1, 0.5)
 famHx_y = rbinom(20, 1, 0.5)
 syndrome_y = rbinom(20, 1, 0.5)
+vent_y = rbinom(20, 1, 0.5)
 y = rbinom(20, 1, 0.5)
-intercept = rep(-1.564, 20)
+intercept = rep(-2.022, 20)
 
 df = cbind.data.frame(sex_f, atsi_y, ref_bilat, cranio_y, famHx_y, syndrome_y, y, intercept)
 
-f <- glm(y ~ 0 + offset(intercept) + offset(0.141 * sex_f) + offset(-0.245 * atsi_y) + offset(1.180 * ref_bilat) + offset(1.512 * cranio_y) 
-         + offset(1.297 * famHx_y) + offset(0.993 * syndrome_y), data = df, family = binomial(link='logit'))
+f <- glm(y ~ 0 + offset(intercept) + offset(0.275 * sex_f) + offset(-0.298 * atsi_y) + offset(1.445 * ref_bilat) + offset(1.001 * cranio_y) 
+         + offset(1.530 * famHx_y) + offset(-0.328 * vent_y) + offset(0.946 * syndrome_y), data = df, family = binomial(link='logit'))
 f 
 
-intercept = -1.564
 sex_f = 0
 atsi_y = 1
 ref_bilat = 0
 cranio_y = 0
 famHx_y = 0
 syndrome_y = 0
+vent_y = 0
 
-new_data = data.frame(intercept, sex_f, atsi_y, ref_bilat, cranio_y, famHx_y, syndrome_y)
+new_data = data.frame(intercept, sex_f, atsi_y, ref_bilat, cranio_y, famHx_y, vent_y, syndrome_y)
 
 pred = predict(f, newdata = new_data, type='response')
 pred
@@ -43,14 +44,13 @@ model = readRDS("model.rds")
 summary(model)
 
 # check model by manually making some predictions (see if they are the same as my model)
-intercept = -1.564
 sex_f = 0
 atsi_y = 1
 ref_bilat = 0
 cranio_y = 0
 famHx_y = 0
 syndrome_y = 0
-manual_model = -1.564 + (0.141 * sex_f) - (0.245 * atsi_y) + (1.180 * ref_bilat) + (1.512 * cranio_y) +  (1.297 * famHx_y) + (0.993 * syndrome_y)
+manual_model = -2.022 + (0.275 * sex_f) - (0.298 * atsi_y) + (1.445 * ref_bilat) + (1.001 * cranio_y) + (1.530 * famHx_y) - (0.328 * vent_y) + (0.946 * syndrome_y)
 odds = exp(manual_model)
 prob = odds/(1 + odds)
 prob 
