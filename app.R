@@ -52,7 +52,7 @@ ui <- fluidPage(
                       If we use the calculator 
                     with our initial example: a female indigenous baby with family history of hearing loss, we can see the risk is 0.37, quite a lot higher than the 
                     average risk for females (0.15). This baby
-                    has 37% risk of being diagnosed with permanent hearing loss.'),
+                    has almost 40% risk of being diagnosed with permanent hearing loss.'),
                   p('The risk calculator cannot make predictions for infants with: bacterial meningitis, hyperbilirubinaemia, perinatal infection, severe asphyxia, 
                     prolonged ventilation 
                     or professional concern risk factors due to small numbers of babies with these risk factors'),
@@ -72,7 +72,7 @@ server <- function(input, output) {
     cranio_y = ifelse(input$cranio_y, 1, 0)
     famHx_y = ifelse(input$famHx_y, 1, 0)
     syndrome_y = ifelse(input$syndrome_y, 1, 0)
-    data.frame(intercept, sex_f, atsi_y, ref_bilat, cranio_y, famHx_y, vent_y, syndrome_y)
+    data.frame(intercept, sex_f, atsi_y, ref_bilat, cranio_y, famHx_y, syndrome_y)
   })
 
    output$prediction <- renderText({
