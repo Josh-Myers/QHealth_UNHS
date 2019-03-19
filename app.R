@@ -2,7 +2,7 @@ library(shiny)
 
 # load model and set intercept value
 model = readRDS("model.rds")
-intercept = -2.022
+intercept = -2.030
 
 # define UI
 ui <- fluidPage(
@@ -24,8 +24,6 @@ ui <- fluidPage(
                        "Craniofacial abnormalities"),
                   checkboxInput("famHx_y",
                        "Family history"),
-                  checkboxInput("vent_y",
-                                "Prolonged ventilation"),
                   checkboxInput("syndrome_y",
                        "Syndrome"), 
                   actionButton('do', "Go"),
@@ -52,11 +50,12 @@ ui <- fluidPage(
                     calculate this by deselecting all factors and pressing "Go". Average risk for females is slightly higher (0.15), meaning that for females, 15% of
                     referrals will go on to be diagnosed with permanent hearing loss. 
                       If we use the calculator 
-                    with our first example: a female indigenous baby with family history of hearing loss, we can see the risk is 0.37, quite a lot higher than the 
+                    with our initial example: a female indigenous baby with family history of hearing loss, we can see the risk is 0.37, quite a lot higher than the 
                     average risk for females (0.15). This baby
-                    has approximately 40% risk of being diagnosed with permanent hearing loss.'),
+                    has 37% risk of being diagnosed with permanent hearing loss.'),
                   p('The risk calculator cannot make predictions for infants with: bacterial meningitis, hyperbilirubinaemia, perinatal infection, severe asphyxia, 
-                    and professional concern risk factors due to small numbers of babies with these risk factors'),
+                    prolonged ventilation 
+                    or professional concern risk factors due to small numbers of babies with these risk factors'),
                   p('For further details, see the pubilcation by Fitzgibbons, J., Driscoll, C., Beswick, R., & Myers, J. xxxxxxxxxxxx (Submitted to xxxxxxxxxxx).')
                   
                   ) # close tabPanel
@@ -72,7 +71,6 @@ server <- function(input, output) {
     ref_bilat = ifelse(input$ref_bilat, 1, 0)
     cranio_y = ifelse(input$cranio_y, 1, 0)
     famHx_y = ifelse(input$famHx_y, 1, 0)
-    vent_y = ifelse(input$vent_y, 1, 0)
     syndrome_y = ifelse(input$syndrome_y, 1, 0)
     data.frame(intercept, sex_f, atsi_y, ref_bilat, cranio_y, famHx_y, vent_y, syndrome_y)
   })
